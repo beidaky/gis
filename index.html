@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0f5c6e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="GIS复习" />
+  <title>GIS 知识高效复习工作台 · 地理信息系统导论（第8版）</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- 顶部固定工具栏（桌面单行；手机极简紧凑单行） -->
+    <header class="topbar" id="topbar">
+      <div class="topbar-left">
+        <button id="btn-sidebar-toggle" class="icon-btn mobile-only" title="展开/收起目录" aria-label="切换目录">☰</button>
+        <div class="brand">
+          <span class="brand-logo" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M2 12h20"></path>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </span>
+          <div class="brand-text">
+            <div class="brand-title">GIS 知识复习</div>
+            <div class="brand-sub" id="brand-sub">地理信息系统导论（第8版）</div>
+          </div>
+        </div>
+        <div class="mastery-pill" id="global-mastery-pill" title="已掌握卡片进度">
+          <span class="mastery-dot"></span>
+          <span id="global-mastery-text"><span class="mastery-prefix">已掌握 </span>0/49<span class="mastery-pct"> (0%)</span></span>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="主视图切换">
+        <button class="nav-tab active" data-view="chapters">📖 章节精讲</button>
+        <button class="nav-tab" data-view="framework">🧭 手写框架</button>
+        <button class="nav-tab" data-view="flashcards">🃏 闪卡抽背</button>
+        <button class="nav-tab" data-view="comparisons">⚖️ 对比与去重</button>
+        <button class="nav-tab" data-view="graph">🕸️ 脉络图</button>
+      </nav>
+
+      <div class="topbar-right">
+        <div class="search-wrap" id="search-wrap">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input
+            type="search"
+            id="global-search-input"
+            placeholder="搜知识点 / 缩写 / 页码(P52)..."
+            autocomplete="off"
+            aria-label="搜索知识点或书本页码"
+          />
+          <kbd class="search-kbd">/</kbd>
+          <button id="btn-mobile-search-close" class="icon-btn mobile-search-close" title="收起搜索" aria-label="收起搜索">✕</button>
+          <div id="search-dropdown" class="search-dropdown hidden" role="listbox"></div>
+        </div>
+
+        <div class="mode-toggles">
+          <button id="btn-mobile-search-open" class="icon-btn mobile-only" title="搜索知识点或页码" aria-label="打开搜索">🔍</button>
+          <button id="btn-cloze-mode" class="toggle-btn desktop-toggle" title="挖空背诵模式（主动回忆）" aria-pressed="false">
+            🧠 挖空
+          </button>
+          <button id="btn-outline-mode" class="toggle-btn desktop-toggle" title="大纲骨架模式（仅看标题与核心句）" aria-pressed="false">
+            🌳 骨架
+          </button>
+          <button id="btn-all-pages" class="toggle-btn desktop-toggle" title="全局显/隐原书页码" aria-pressed="false">
+            📖 页码
+          </button>
+          <button id="btn-theme-toggle" class="icon-btn" title="切换浅色/夜间护眼主题" aria-label="切换主题">
+            🌙
+          </button>
+          <button id="btn-backup-modal" class="icon-btn" title="跨设备同步与进度备份" aria-label="备份与同步">
+            ⚙️
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 手机端章节视图专属快捷复习工具条（仅 <= 860px 且在章节视图显示） -->
+    <div id="mobile-quickbar" class="mobile-quickbar">
+      <button id="m-btn-cloze" class="m-quick-btn" aria-pressed="false">🧠 挖空背诵</button>
+      <button id="m-btn-outline" class="m-quick-btn" aria-pressed="false">🌳 骨架模式</button>
+      <button id="m-btn-pages" class="m-quick-btn" aria-pressed="false">📖 全部页码</button>
+    </div>
+
+    <!-- 主体布局 -->
+    <div class="workspace">
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-title">全书章节导航</div>
+          <div class="filter-pills" id="status-filter-pills">
+            <button class="filter-pill active" data-filter="all">全部</button>
+            <button class="filter-pill" data-filter="core">★★★ 核心</button>
+            <button class="filter-pill" data-filter="todo">待巩固</button>
+            <button class="filter-pill" data-filter="mastered">已牢记</button>
+          </div>
+        </div>
+        <div class="chapter-list" id="chapter-list"></div>
+        <div class="sidebar-footer" id="sidebar-footer"></div>
+      </aside>
+      <div id="sidebar-backdrop" class="sidebar-backdrop hidden"></div>
+
+      <main id="main-content" class="main-content">
+        <section id="view-chapters" class="view-panel active"></section>
+        <section id="view-framework" class="view-panel"></section>
+        <section id="view-flashcards" class="view-panel"></section>
+        <section id="view-comparisons" class="view-panel"></section>
+        <section id="view-graph" class="view-panel"></section>
+      </main>
+    </div>
+
+    <!-- 手机端底部固定原生 App 导航栏（仅 <= 860px 显示） -->
+    <nav class="bottom-nav" aria-label="移动端底部导航">
+      <button class="bottom-nav-btn active" data-view="chapters">
+        <span class="bnav-icon">📖</span>
+        <span class="bnav-label">精讲</span>
+      </button>
+      <button class="bottom-nav-btn" data-view="framework">
+        <span class="bnav-icon">🧭</span>
+        <span class="bnav-label">框架</span>
+      </button>
+      <button class="bottom-nav-btn" data-view="flashcards">
+        <span class="bnav-icon">🃏</span>
+        <span class="bnav-label">闪卡</span>
+      </button>
+      <button class="bottom-nav-btn" data-view="comparisons">
+        <span class="bnav-icon">⚖️</span>
+        <span class="bnav-label">对比</span>
+      </button>
+      <button class="bottom-nav-btn" data-view="graph">
+        <span class="bnav-icon">🕸️</span>
+        <span class="bnav-label">脉络</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- 原书高清页 / 原理图预览模态框 -->
+  <div id="page-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-backdrop" id="page-modal-backdrop"></div>
+    <div class="modal-dialog modal-xl">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h3 id="modal-title">原书页面预览</h3>
+          <span id="modal-subtitle" class="modal-subtitle"></span>
+        </div>
+        <div class="modal-actions">
+          <button id="modal-prev-page" class="btn-sm" title="上一参考页">← 上一页</button>
+          <button id="modal-zoom-out" class="btn-sm" title="缩小">－</button>
+          <span id="modal-zoom-label" class="zoom-label">100%</span>
+          <button id="modal-zoom-in" class="btn-sm" title="放大">＋</button>
+          <button id="modal-next-page" class="btn-sm" title="下一参考页">下一页 →</button>
+          <button id="modal-close" class="icon-btn" title="关闭 (Esc)" aria-label="关闭">✕</button>
+        </div>
+      </div>
+      <div class="modal-related-bar" id="modal-related-bar"></div>
+      <div class="modal-body-img-wrap" id="modal-img-wrap">
+        <img id="modal-img" src="" alt="原书高清页" />
+        <div id="modal-img-fallback" class="modal-img-fallback hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 跨设备口令同步 + 备份 + 快捷键弹窗 -->
+  <div id="backup-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="backup-title">
+    <div class="modal-backdrop" id="backup-modal-backdrop"></div>
+    <div class="modal-dialog modal-md">
+      <div class="modal-header">
+        <h3 id="backup-title">⚙️ 跨设备同步与备份</h3>
+        <button id="backup-close" class="icon-btn" aria-label="关闭">✕</button>
+      </div>
+      <div class="modal-body-pad">
+        <div class="backup-section">
+          <h4>🔗 手机 ↔ 电脑一键口令同步</h4>
+          <p class="muted-text">GitHub Pages 为纯静态网站，学习进度保存在当前设备浏览器。想把手机或电脑上的「已掌握标记 + 个人笔记」同步到另一台设备时，点下方生成口令复制粘贴即可：</p>
+          <div class="btn-row" style="margin-bottom:8px;">
+            <button id="btn-gen-sync-code" class="btn-primary">📋 生成并复制同步口令</button>
+            <button id="btn-apply-sync-code" class="btn-secondary">📥 应用下方粘贴的口令</button>
+          </div>
+          <textarea id="sync-code-box" class="sync-code-box" rows="2" placeholder="点击「生成同步口令」获得代码，或在此粘贴从另一台设备复制的口令..."></textarea>
+          <div id="sync-feedback" class="backup-feedback"></div>
+        </div>
+
+        <div class="backup-section">
+          <h4>💾 JSON 文件备份与重置</h4>
+          <div class="btn-row">
+            <button id="btn-export-progress" class="btn-secondary">⬇ 导出 JSON</button>
+            <label class="btn-secondary file-label">
+              ⬆ 导入恢复
+              <input type="file" id="input-import-progress" accept=".json,application/json" hidden />
+            </label>
+            <button id="btn-reset-progress" class="btn-danger">🗑 清空记录</button>
+          </div>
+          <div id="backup-feedback" class="backup-feedback"></div>
+        </div>
+
+        <div class="backup-section">
+          <h4>⌨️ 桌面快捷操作</h4>
+          <ul class="shortcut-list">
+            <li><kbd>/</kbd> 或 <kbd>Ctrl+K</kbd>：聚焦搜索框（支持搜页码如 <code>P323</code>）</li>
+            <li><kbd>Esc</kbd>：关闭预览弹窗 / 收起搜索列表</li>
+            <li>闪卡模式 <kbd>Space</kbd> 翻面，<kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> 评分</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 离线安全加载顺序 -->
+  <script src="data/gis_data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

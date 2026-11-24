@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>页面未找到 · GIS 知识复习工作台</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/icon.svg" />
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #faf8f4;
+      color: #1f2937;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      padding: 20px;
+    }
+    .card {
+      max-width: 440px;
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #e4ddd1;
+      border-top: 5px solid #0f5c6e;
+      border-radius: 14px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(24, 34, 48, 0.08);
+    }
+    h1 { margin: 0 0 8px; font-size: 22px; color: #0f5c6e; }
+    p { margin: 0 0 20px; color: #4b5563; font-size: 14.5px; line-height: 1.65; }
+    .btn {
+      display: inline-block;
+      background: #0f5c6e;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 22px;
+      border-radius: 9px;
+      font-weight: 600;
+      font-size: 14.5px;
+    }
+    .btn:hover { background: #0a4654; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🌍 页面走丢啦（404）</h1>
+    <p>您访问的链接不存在或已移动，点击下方按钮立即返回《地理信息系统导论》知识复习工作台首页。</p>
+    <a class="btn" id="back-home" href="./index.html">返回 GIS 复习工作台 →</a>
+  </div>
+  <script>
+    if (window.location.protocol.indexOf("http") === 0) {
+      document.getElementById("back-home").setAttribute("href", "/");
+    }
+  </script>
+</body>
+</html>

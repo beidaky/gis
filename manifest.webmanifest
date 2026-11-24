@@ -1,0 +1,24 @@
+{
+  "name": "GIS 知识高效复习工作台",
+  "short_name": "GIS复习",
+  "description": "《地理信息系统导论（原著第8版）》全书重点复习卡片、手写框架联动与闪卡抽背工具",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf8f4",
+  "theme_color": "#0f5c6e",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
